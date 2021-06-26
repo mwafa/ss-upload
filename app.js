@@ -14,7 +14,9 @@ app.get(/(([a-z]+)\_([0-9]{8})\_[0-9]+\.jpg)/, async (req, res) => {
   const exist = await davClient.exists(path)
   if (exist) {
     fs.writeFileSync(filename, await davClient.getFileContents(path))
-    uploadFTPS(filename)
+    uploadFTPS(filename).finally(() => {
+      fs.unlinkSync(filename)
+    })
   }
   res.json({ path, exist })
 })
