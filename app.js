@@ -13,7 +13,8 @@ app.get(/thumb\/(([a-z]+)\_([0-9]{8})\_[0-9]+\.jpg)/, async (req, res) => {
   const date = d.slice(0, 4) + "-" + d.slice(4, 6) + "-" + d.slice(6, 8)
   const path = `/studio/${username}/${date}/${filename}`
   const data = await getThumb(path, filename)
-  return res.sendFile(data)
+  if (data) return res.sendFile(data)
+  return res.redirect("https://via.placeholder.com/100")
 })
 
 app.get(/(([a-z]+)\_([0-9]{8})\_[0-9]+\.jpg)/, async (req, res) => {
